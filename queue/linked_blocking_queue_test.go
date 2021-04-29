@@ -15,7 +15,7 @@ func TestLinkedBlockingQueue_Put(t *testing.T) {
 		time.Sleep(10 * time.Second)
 		for i := 0; i < 10; i++ {
 			fmt.Printf("putting %d", i)
-			 queue.OfferTimout(i, time.Second * 5)
+			queue.OfferTimout(i, time.Second*5)
 		}
 		queue.Range(func(value interface{}) bool {
 			i := value.(int)
@@ -25,7 +25,7 @@ func TestLinkedBlockingQueue_Put(t *testing.T) {
 			}
 			return true
 		})
-		time.Sleep(8 * time.Minute)
+		time.Sleep(8 * time.Second)
 	}()
 
 	for {
@@ -33,7 +33,6 @@ func TestLinkedBlockingQueue_Put(t *testing.T) {
 		x := queue.PollTimeout(2 * time.Second)
 		fmt.Println("x: ", x)
 		// time.Sleep(100 * time.Minute)
-
 
 	}
 }

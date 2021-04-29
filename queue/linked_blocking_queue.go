@@ -7,6 +7,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	. "github.com/torchcc/data-structure/error"
 )
 
 type LinkedBlockingQueue struct {
@@ -114,7 +116,7 @@ func (q *LinkedBlockingQueue) Put(i interface{}) error {
 	}
 	c := -1
 	q.putLock.Lock()
-	for ; q.Len() == q.capacity; {
+	for q.Len() == q.capacity {
 		q.notFull.Wait()
 	}
 	q.head.PushBack(i)
@@ -167,7 +169,7 @@ func (q *LinkedBlockingQueue) Take() interface{} {
 	c := -1
 	var x interface{}
 	q.takeLock.Lock()
-	for ; q.Len() == 0; {
+	for q.Len() == 0 {
 		q.notEmpty.Wait()
 	}
 	x = q.dequeue()
