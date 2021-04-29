@@ -391,7 +391,17 @@ func (q *LinkedBlockingQueue) Clear() {
 	// defer q.fullyUnlock()
 }
 
+/**
+ * @Description: create a LinkedBlockingQueue with the given capacity.
+				if capacity is 0, it'll be replace by math.MaxInt32,
+				if capacity is less than 0, IllegalArgumentError will be panic
+ * @param capacity
+ * @return *LinkedBlockingQueue
+*/
 func NewLinkedBlockingQueue(capacity int) *LinkedBlockingQueue {
+	if capacity < 0 {
+		panic(IllegalArgumentError)
+	}
 	if capacity == 0 {
 		capacity = math.MaxInt32
 	}
