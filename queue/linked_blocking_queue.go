@@ -340,6 +340,7 @@ func (q *LinkedBlockingQueue) Remove(i interface{}) bool {
 	return false
 }
 
+// lower performance
 func (q *LinkedBlockingQueue) ContainsAll(c Collection) bool {
 	containsAll := true
 	c.Range(func(value interface{}) bool {
@@ -459,8 +460,15 @@ func FromSlice(s []interface{}, capacity int) (*LinkedBlockingQueue, error) {
 	return q, nil
 }
 
-func DeepCopy(q *LinkedBlockingQueue) *LinkedBlockingQueue {
-	copied, _ := FromSlice(q.ToSlice(), q.capacity)
+func (q *LinkedBlockingQueue) DeepCopy() *LinkedBlockingQueue {
+	copied := NewLinkedBlockingQueue(q.capacity)
+	var n int64
+	q.Range(func(value interface{}) bool {
+		copied.head.PushBack(value)
+		n++
+		return true
+	})
+	atomic.StoreInt64(&copied.length, n)
 	return copied
 }
 
