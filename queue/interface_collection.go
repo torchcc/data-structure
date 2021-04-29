@@ -100,30 +100,12 @@ type Collection interface {
 	ContainsAll(c Collection) bool
 
 	/**
-	 * Adds all of the elements in the specified collection to this collection
-	 * (optional operation).  The behavior of this operation is undefined if
-	 * the specified collection is modified while the operation is in progress.
-	 * (This implies that the behavior of this call is undefined if the
-	 * specified collection is this collection, and this collection is
-	 * nonempty.)
-	 *
-	 * @param c collection containing elements to be added to this collection
-	 * @return <tt>true</tt> if this collection changed as a result of the call
-	 * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
-	 *         is not supported by this collection
-	 * @throws ClassCastException if the class of an element of the specified
-	 *         collection prevents it from being added to this collection
-	 * @throws NullPointerException if the specified collection contains a
-	 *         null element and this collection does not permit null elements,
-	 *         or if the specified collection is null
-	 * @throws IllegalArgumentException if some property of an element of the
-	 *         specified collection prevents it from being added to this
-	 *         collection
-	 * @throws IllegalStateException if not all the elements can be added at
-	 *         this time due to insertion restrictions
-	 * @see #add(Object)
+	 * @Description:
+	 * @param c
+	 * @return bool indicate whether c has changed or not when the method return
+	 * @return error indicate error happened during adding.
 	 */
-	AddAll(c Collection) bool
+	AddAll(c Collection) (bool, error)
 
 	/**
 	 * Removes all of this collection's elements that are also contained in the
@@ -151,10 +133,10 @@ type Collection interface {
 	RemoveAll(c Collection) bool
 
 	/**
-     * Removes all of the elements of this collection that satisfy the given
-     * predicate.  Errors or runtime exceptions thrown during iteration or by
-     * the predicate are relayed to the caller.
-     *
+	 * Removes all of the elements of this collection that satisfy the given
+	 * predicate.  Errors or runtime exceptions thrown during iteration or by
+	 * the predicate are relayed to the caller.
+	 *
 	 */
 	RemoveIf(filter func(value interface{}) bool) bool
 

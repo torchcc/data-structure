@@ -352,21 +352,37 @@ func (q *LinkedBlockingQueue) ContainsAll(c Collection) bool {
 	return containsAll
 }
 
-func (q *LinkedBlockingQueue) AddAll(c Collection) bool {
+/**
+* @Description: if q's capacity is not enough,  it will add all non-nil element of Collection c to q until q is full.
+ 				 nil element in c will be skipped . it'll return FullError/ NilPointerError to indicate error.
+* @receiver q
+* @param c  if c is nil, it'll panic NilPointerError, if c is
+* @return bool indicates whether the origin queue has been changed or not when the func return
+*/
+func (q *LinkedBlockingQueue) AddAll(c Collection) (modified bool, err error) {
 	if c == nil {
-		panic(NilPointerError)
+		return false, NilPointerError
 	}
-	if toAdd, ok := c.(*LinkedBlockingQueue); ok && toAdd == q {
-		panic(IllegalArgumentError)
-	}
-	modified := false
+	q.fullyLock()
+	defer q.fullyUnlock()
+	remainingCapacity := int64(q.RemainingCapacity())
+	var n int64
 	c.Range(func(value interface{}) bool {
-		if q.Add(value) {
-			modified = true
+		if value == nil {
+			err = NilPointerError
+			return true
 		}
+		if n == remainingCapacity {
+			err = FullError
+			return false
+		}
+		modified = true
+		q.head.PushBack(value)
+		n++
 		return true
 	})
-	return modified
+	atomic.AddInt64(&q.length, n)
+	return
 }
 
 func (q *LinkedBlockingQueue) RemoveAll(c Collection) bool {
