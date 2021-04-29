@@ -407,8 +407,15 @@ func NewLinkedBlockingQueue(capacity int) *LinkedBlockingQueue {
 	}
 }
 
-func FromSlice(s []interface{}) (*LinkedBlockingQueue, error) {
-	q := NewLinkedBlockingQueue(0)
+/**
+ * @Description: create a LinkedBlockingQueue from a slice.  if the give capacity is less than the slice's len, FullError will be return
+ * @param s
+ * @param capacity
+ * @return *LinkedBlockingQueue
+ * @return error
+ */
+func FromSlice(s []interface{}, capacity int) (*LinkedBlockingQueue, error) {
+	q := NewLinkedBlockingQueue(capacity)
 	q.fullyLock()
 	defer q.fullyUnlock()
 	var n int64 = 0
