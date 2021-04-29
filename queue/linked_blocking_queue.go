@@ -443,6 +443,11 @@ func FromSlice(s []interface{}, capacity int) (*LinkedBlockingQueue, error) {
 	return q, nil
 }
 
+func DeepCopy(q *LinkedBlockingQueue) *LinkedBlockingQueue {
+	copied, _ := FromSlice(q.ToSlice(), q.capacity)
+	return copied
+}
+
 /**
  * Signals a waiting take. Called only from put/offer (which do not
  * otherwise ordinarily lock takeLock.)
