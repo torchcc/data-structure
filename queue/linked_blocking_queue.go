@@ -283,7 +283,7 @@ func (q *LinkedBlockingQueue) ToSlice() []interface{} {
 	return ret
 }
 
-func (q *LinkedBlockingQueue) ToString() string {
+func (q *LinkedBlockingQueue) String() string {
 	q.fullyLock()
 	defer q.fullyUnlock()
 	if p := q.head.Front(); p == nil {
@@ -409,8 +409,8 @@ func NewLinkedBlockingQueue(capacity int) *LinkedBlockingQueue {
 
 func FromSlice(s []interface{}) (*LinkedBlockingQueue, error) {
 	q := NewLinkedBlockingQueue(0)
-	q.putLock.Lock()
-	defer q.putLock.Unlock()
+	q.fullyLock()
+	defer q.fullyUnlock()
 	var n int64 = 0
 	for _, item := range s {
 		if item == nil {
